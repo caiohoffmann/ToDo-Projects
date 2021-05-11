@@ -1,38 +1,32 @@
 import MenuBlock from "../MenuBlock/MenuBlock";
 import Task from "../Task/Task";
 import Block from "../Domain/Block"
-import * as React from "react";
+import React, {useState, FunctionComponent} from "react";
 import CSS from "csstype";
 
-class ToDoBlock extends React.Component<Block,Block>{
-    constructor(props : Block){
-        super(props);
-        this.state = {...props};
-        this.toDoBlockCSS = {
-            backgroundColor : this.state.coTaskBlockColor
-        }
-    }
+const ToDoBlock:FunctionComponent<Block> = ((props) => {
+    const [backgroundColor,setBackgroundColor] = useState(props.coTaskBlockColor);
         
-    toDoBlockCSS: CSS.Properties;
+    const toDoBlockCSS: CSS.Properties = {
+        backgroundColor:backgroundColor
+    };
 
-    render(){
-        return (
+    const onColorChange = (color:string) => {
+        setBackgroundColor(color);
+    };
+
+    return <>
+         (
         <div className="col s12 m6">
-            <div className="card" style={this.toDoBlockCSS}>
+            <div className="card" style={toDoBlockCSS}>
                 <div className="card-content white-text">
                     <div className="input-field">
                         <input id="new-taskblock-${this.state.idTaskBlock}" type="text" className="validate" data-type="new-taskblock"  /> 
                         <label>New Task Block</label>
                         <i className="material-icons prefix posfix" >add_circle</i>
                     </div>
-                
-                    <div className="icon-menu">
-                        <a className="btn-floating red">
-                            <i className="large material-icons">menu</i>
-                        </a>
-                        <MenuBlock  coColor="#333"/>
-                    </div>
-                    <span className="card-title">{this.state.deTaskBlock}</span>
+                    <MenuBlock  coColor="backgroundColor" onColorChange={setBackgroundColor}/>
+                    <span className="card-title">{props.deTaskBlock}</span>
                     <ul>
                         <Task deTask="My new task" idToDo={0}/>
                         <li data-type="new-task-li">
@@ -47,7 +41,7 @@ class ToDoBlock extends React.Component<Block,Block>{
             </div>
         </div>
         )
-    }
-}
+    </>
+});
 
 export default ToDoBlock;
